@@ -1,6 +1,7 @@
 // ── Canvas setup ─────────────────────────────────────────────────────────────
 const canvas = document.getElementById('c');
-const ctx    = canvas.getContext('2d');
+const ctx    = canvas.getContext('2d', { alpha: true });
+canvas.style.background = 'transparent';
 
 const SIZE    = Math.min(window.innerWidth * 0.95, 560);
 canvas.width  = SIZE;
@@ -612,7 +613,11 @@ function projectOntoSegment(px, py, ax, ay, bx, by) {
   return { x: ax + t*dx, y: ay + t*dy };
 }
 
+canvas.addEventListener('selectstart', e => e.preventDefault());
+canvas.addEventListener('dragstart',   e => e.preventDefault());
+
 canvas.addEventListener('mousedown', e => {
+  e.preventDefault();
   const p = getPos(e);
   if (insideTopTip(p.x, p.y)) {
     lasso = null; stroke = [];
