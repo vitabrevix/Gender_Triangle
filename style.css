@@ -250,9 +250,7 @@ canvas {
 }
 
 .copy-btn:hover {
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  border-color: rgba(255,255,255,0.28);
+  filter: brightness(1.2);
 }
 
 /* ── Export button ───────────────────────────────────────────────────────── */
@@ -267,11 +265,9 @@ canvas {
   text-transform: uppercase;
   padding: 0.5rem 1.6rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, filter 0.2s ease;
 }
 
 .export-btn:hover {
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  border-color: rgba(255,255,255,0.28);
+  filter: brightness(1.2);
 }

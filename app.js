@@ -448,6 +448,18 @@ function resetCard() {
   document.getElementById('export-row').style.display = 'none';
 }
 
+function styleExportButtons(dominantColor) {
+  const expBtn  = document.getElementById('export-btn');
+  const copyBtn = document.getElementById('copy-btn');
+  [expBtn, copyBtn].forEach(btn => {
+    btn.style.background  = dominantColor;
+    btn.style.borderColor = dominantColor;
+    btn.style.color       = '#fff';
+    btn.style.boxShadow   = `0 0 18px 4px ${dominantColor}88, 0 0 6px 1px ${dominantColor}`;
+    btn.style.fontWeight  = '600';
+  });
+}
+
 function renderBlend(b, label, info) {
   // Remap for display: bary wFem=1 at left (male visual), wMale=1 at right (female visual)
   // So for display purposes: displayMale = b.fem, displayFemale = b.male
@@ -473,6 +485,7 @@ function renderBlend(b, label, info) {
   document.getElementById('zone-info').textContent = info || '';
   document.getElementById('card').classList.add('active');
   document.getElementById('export-row').style.display = 'flex';
+  styleExportButtons(items[0].color);
 }
 
 function showPoint(x, y) {
@@ -500,6 +513,7 @@ function showBottomBar(px) {
     </div>`).join('');
   document.getElementById('card').classList.add('active');
   document.getElementById('export-row').style.display = 'flex';
+  styleExportButtons(items[0].color);
 }
 
 function showTopTip() {
@@ -514,6 +528,7 @@ function showTopTip() {
     </div>`;
   document.getElementById('card').classList.add('active');
   document.getElementById('export-row').style.display = 'flex';
+  styleExportButtons('#9b6fd4');
 }
 
 function showCornerTip(corner) {
@@ -532,6 +547,7 @@ function showCornerTip(corner) {
     </div>`;
   document.getElementById('card').classList.add('active');
   document.getElementById('export-row').style.display = 'flex';
+  styleExportButtons(color);
 }
 
 function showEdge(side, px, py) {
@@ -569,6 +585,7 @@ function showEdge(side, px, py) {
   document.getElementById('zone-info').textContent = '';
   document.getElementById('card').classList.add('active');
   document.getElementById('export-row').style.display = 'flex';
+  styleExportButtons(items[0].color);
 }
 
 function showLasso(pts) {
