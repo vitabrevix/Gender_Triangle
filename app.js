@@ -332,11 +332,12 @@ function drawTopTip() {
   ctx.save();
   triPath();
   ctx.clip();
-  ctx.filter = 'blur(12px)';
+  try { ctx.filter = 'blur(12px)'; } catch(e) { /* unsupported */ }
   ctx.fillStyle = `rgba(155,111,212,${hovered ? 0.7 : 0.35})`;
   ctx.beginPath();
   ctx.arc(cx, cy, sz + 8, 0, Math.PI * 2);
   ctx.fill();
+  ctx.filter = 'none';  // explicitly reset before restore — ctx.restore() does NOT reset filter in all browsers
   ctx.restore();
 
   // ── Arrow/diamond shape ──
