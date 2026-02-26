@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gender Triangle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+
+  <h1>Gender Triangle</h1>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="btn-point" onclick="setMode('point')">◉ Point</button>
+    <button class="mode-btn"        id="btn-zone"  onclick="setMode('zone')">✏ Lasso</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="c"></canvas>
+    <div class="labels">
+      <div class="label nb">Non-Binary</div>
+      <div class="label male">Male</div>
+      <div class="label fem">Female</div>
+    </div>
+  </div>
+
+  <div class="result-card" id="card">
+    <div class="result-label" id="card-label">Your position</div>
+    <div class="blend-display" id="blend">
+      <div class="hint">Click or draw inside the triangle</div>
+    </div>
+    <div class="zone-info" id="zone-info"></div>
+    <button class="export-btn" id="export-btn" onclick="exportImage()" style="display:none">↓ Export</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
