@@ -445,7 +445,7 @@ function resetCard() {
   document.getElementById('card').classList.remove('active');
   document.getElementById('zone-info').textContent  = '';
   document.getElementById('card-label').textContent = 'Your position';
-  document.getElementById('export-btn').style.display = 'none';
+  document.getElementById('export-row').style.display = 'none';
 }
 
 function renderBlend(b, label, info) {
@@ -472,7 +472,7 @@ function renderBlend(b, label, info) {
 
   document.getElementById('zone-info').textContent = info || '';
   document.getElementById('card').classList.add('active');
-  document.getElementById('export-btn').style.display = 'block';
+  document.getElementById('export-row').style.display = 'flex';
 }
 
 function showPoint(x, y) {
@@ -499,7 +499,7 @@ function showBottomBar(px) {
       </div>
     </div>`).join('');
   document.getElementById('card').classList.add('active');
-  document.getElementById('export-btn').style.display = 'block';
+  document.getElementById('export-row').style.display = 'flex';
 }
 
 function showTopTip() {
@@ -513,7 +513,7 @@ function showTopTip() {
       </div>
     </div>`;
   document.getElementById('card').classList.add('active');
-  document.getElementById('export-btn').style.display = 'block';
+  document.getElementById('export-row').style.display = 'flex';
 }
 
 function showCornerTip(corner) {
@@ -531,7 +531,7 @@ function showCornerTip(corner) {
       </div>
     </div>`;
   document.getElementById('card').classList.add('active');
-  document.getElementById('export-btn').style.display = 'block';
+  document.getElementById('export-row').style.display = 'flex';
 }
 
 function showEdge(side, px, py) {
@@ -568,7 +568,7 @@ function showEdge(side, px, py) {
     </div>`).join('');
   document.getElementById('zone-info').textContent = '';
   document.getElementById('card').classList.add('active');
-  document.getElementById('export-btn').style.display = 'block';
+  document.getElementById('export-row').style.display = 'flex';
 }
 
 function showLasso(pts) {
@@ -727,7 +727,7 @@ canvas.addEventListener('touchend', e => {
 
 // ── Export ────────────────────────────────────────────────────────────────────
 
-function exportImage() {
+function buildExportCanvas() {
   const EW = 900;
   const scale = EW / W;
   const EH = Math.round(H * scale);
@@ -737,20 +737,16 @@ function exportImage() {
   ec.height = EH;
   const ex = ec.getContext('2d');
 
-  // Background
   ex.fillStyle = '#0d0d12';
   ex.fillRect(0, 0, EW, EH);
 
-  // Gradient triangle — putImageData ignores transforms so draw via temp canvas
   const tmp = document.createElement('canvas');
   tmp.width = W; tmp.height = H;
   tmp.getContext('2d').putImageData(baseImg, 0, 0);
   ex.drawImage(tmp, 0, 0, EW, EH);
 
-  // Scale so everything else is drawn in original coord space
   ex.scale(scale, scale);
 
-  // Triangle border
   ex.beginPath();
   ex.moveTo(V.nb.x, V.nb.y);
   ex.lineTo(V.male.x, V.male.y);
@@ -761,7 +757,6 @@ function exportImage() {
   ex.stroke();
 
   if (lasso && lasso.length > 2) {
-    // Draw lasso fill + outline, clipped to triangle
     const smooth = smoothPts(lasso);
     ex.save();
     ex.beginPath();
@@ -809,7 +804,6 @@ function exportImage() {
     ex.fill();
   }
 
-  // Corner labels (text only, no tips) — offset away if point sits on that vertex
   ex.save();
   ex.font = '600 18px Cormorant Garamond, serif';
   ex.letterSpacing = '0.14em';
@@ -830,10 +824,30 @@ function exportImage() {
   ex.fillText('FEMALE', V.fem.x + (selectedTip === 'fem' ? 8 : 0), V.fem.y + 8 + (selectedTip === 'fem' ? 18 : 0));
   ex.restore();
 
+  return ec;
+}
+
+function exportImage() {
+  const ec = buildExportCanvas();
   const link = document.createElement('a');
   link.download = 'gender-triangle.png';
   link.href = ec.toDataURL('image/png');
   link.click();
+}
+
+async function copyImage() {
+  const ec = buildExportCanvas();
+  ec.toBlob(async blob => {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      const btn = document.getElementById('copy-btn');
+      btn.style.color = '#9b6fd4';
+      btn.title = 'Copied!';
+      setTimeout(() => { btn.style.color = ''; btn.title = 'Copy to clipboard'; }, 1500);
+    } catch (e) {
+      console.error('Copy failed', e);
+    }
+  }, 'image/png');
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────

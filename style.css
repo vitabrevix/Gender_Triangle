@@ -228,9 +228,35 @@ canvas {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Export row ──────────────────────────────────────────────────────────── */
+.export-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.2rem;
+}
+
+.export-row .export-btn {
+  margin-top: 0;
+}
+
+.copy-btn {
+  padding: 0.5rem 0.75rem !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s !important;
+}
+
+.copy-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.28);
+}
+
 /* ── Export button ───────────────────────────────────────────────────────── */
 .export-btn {
-  margin-top: 1.2rem;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 8px;
@@ -242,9 +268,6 @@ canvas {
   padding: 0.5rem 1.6rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .export-btn:hover {
